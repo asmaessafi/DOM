@@ -1,119 +1,91 @@
-////////// product 1:
-var quantity = 0;
-function increaseQuantity() {
-    quantity++;
-    document.querySelector('.quantity').innerText = quantity;
-    updateTotalPrice();
-}
-document.getElementById('increase').addEventListener('click', increaseQuantity);
+let ProductList= document.getElementById('list-products');
+let product =[
+    {noun:"Baskets",img:"/assets/baskets.png",p:'This is a basket',price:'100 '},
+    {noun:"Socks",img:"/assets/socks.png",p:'This is a socks',price:'20 '},
+    {noun:"Bag",img:"/assets/bag.png",p:'This is a bag',price:'50 '},
+]
 
-function decreaseQuantity(){
-    if (quantity > 0) {
-        quantity--;
-        document.querySelector('.quantity').innerText = quantity;
-        updateTotalPrice();
-    }
-}
-document.getElementById('decrease').addEventListener('click',decreaseQuantity)
-   // delate
-document.getElementById('trash').addEventListener('click',removeCard);
-function removeCard() {
-    const card = document.querySelector('.card');
-    card.style.display = 'none';
-    document.getElementById('hiddenImage').style.display = 'block';
-    document.querySelector('.quantity').innerText = 0;
-    updateTotalPrice();
+function initializeProducts(){
+    for(let i=0; i<product.length;i++){
+       let productCard=document.createElement('div');
+        productCard.className='card-body';
+        productCard.innerHTML= 
+            "<div class='card' style='width: 18rem'>"+
+                " <img src='"+product[i].img+"'class='card-img-top'/>"+
+                "<div class='body'>"+
+                        " <h5 class='card-title'>"+product[i].noun+"</h5>"+
+                        "<p class='card-text'>"+product[i].p+"</p>"+
+                        "<h4 class='unit-price'>$"+parseFloat(product[i].price).toFixed()+"</h4>"+
+                    "<div> "+
+                        "<i class='fas fa-plus-circle increase' > </i>"+
+                        " <span class='quantity'>0</span>"+
+                        "<i class='fas fa-minus-circle decrease' ></i>"+
+                    " </div>"+
+                    "<div>"+
+                        "  <i class='fas fa-trash-alt'></i>"+
+                        "<i class='fas fa-heart'></i>"+
+                    "</div>"+
+                "</div>"+
+            "</div>";
+            ProductList.append(productCard);
+}MyEvents()
+totalprice()
+ }
 
-}
-// like
-document.getElementById('like').addEventListener('click',ColorChange)
-function ColorChange(){
-    document.getElementById('like').style.color = 'pink';
-}
-////////// product 2:
-var quantity2 = 0;
-function increaseQuantity2() {
-    quantity2++;
-    document.querySelector('.quantity2').innerText = quantity2;
-    updateTotalPrice();
-}
-document.getElementById('increase2').addEventListener('click', increaseQuantity2);
+document.addEventListener("DOMContentLoaded",initializeProducts);
 
-    function decreaseQuantity2() {
-        if (quantity2 > 0) {
-            quantity2--;
-            document.querySelector('.quantity2').innerText = quantity2;
-            updateTotalPrice();
+function MyEvents(){
+    let productCards=document.getElementsByClassName("card-body")
+  
+    for (let i = 0; i < productCards.length; i++) {
+        let productCard=productCards[i];
+        let quantity=productCard.querySelector('.quantity')
+        const decreaseBtn = productCard.querySelector('.decrease');
+        const increaseBtn = productCard.querySelector('.increase');
+        const trash = productCard.querySelector('.fa-trash-alt');
+        const heart = productCard.querySelector('.fa-heart');
+
+        increaseBtn.addEventListener('click',function(){
+            quantity.innerText=Number(quantity.textContent)+1
+            totalprice()
+            })
+
+
+            
+        decreaseBtn.addEventListener('click',function(){
+            if(quantity.textContent>0){
+            quantity.textContent= Number(quantity.textContent)-1
+            totalprice()
+            }
+        })
+
+
+
+    trash.addEventListener('click',function(){
+        let index=Array.from(productCards).indexOf(productCard)
+        productCard.remove()
+        product.splice(index,1)
+        totalprice()
+    })
+    
+
+    heart.addEventListener('click',function(){
+        heart.classList.toggle('active');
+    })
+
         }
     }
-document.getElementById('decrease2').addEventListener('click',decreaseQuantity2)
-// delate
-document.getElementById('trash2').addEventListener("click",removeCard2);
+function totalprice(){
+    let productCards=document.getElementsByClassName("card-body")
+    let total=0
+    for (let i = 0; i < productCards.length; i++) {
+     const quantity=Number(productCards[i].querySelector(".quantity").textContent)
+     const price=Number(productCards[i].querySelector("h4").textContent.slice(1))
+    total+=quantity * price
 
-function removeCard2(){
-    let card2=document.querySelector('.card2');
-    card2.style.display='none';
-    document.getElementById('hiddenImage').style.display='block';
-    document.querySelector('.quantity2').innerText = 0;
-    updateTotalPrice();
-}
-// like
-document.getElementById('like2').addEventListener('click',ColorChange2)
-function ColorChange2(){
-    document.getElementById('like2').style.color = 'pink';
-}
-
-////////// product 3:
-var quantity3 = 0;
-function increaseQuantity3() {
-    quantity3++;
-    document.querySelector('.quantity3').innerText = quantity3;
-    updateTotalPrice();
-
-}
-document.getElementById('increase3').addEventListener('click', increaseQuantity3);
-
-function decreaseQuantity3(){
-        if (quantity3 > 0) {
-            quantity3--;
-            document.querySelector('.quantity3').innerText = quantity3;
-            updateTotalPrice();
-        }
+        
     }
-
-document.getElementById('decrease3').addEventListener('click',decreaseQuantity3);
-// delate
-document.getElementById('trash3').addEventListener('click',removeCard3);
-function removeCard3(){
- let card3=document.querySelector('.card3');
-card3.style.display='none';
- document.getElementById('hiddenImage').style.display='block';
- document.querySelector('.quantity3').innerText = 0;
- updateTotalPrice();
+    const totalprice= document.getElementById("Total-Price")
+    totalprice.textContent=`Total price :  ${total} $`
+    // console.log( totalprice)
 }
-// like
-document.getElementById('like3').addEventListener('click',ColorChange3)
-function ColorChange3(){
-    document.getElementById('like3').style.color = 'pink';
-}
-////////totalPrice:
-var PBaskets=document.getElementById('p1');
-var NBaskets=document.getElementById('n1');
-
-var PSocks=document.getElementById('p2');
-var NSocks=document.getElementById('n2');
-
-var PBag=document.getElementById('p3');
-var NBag=document.getElementById('n3');
- 
-
-function updateTotalPrice() {
-    var total = (parseFloat(PBaskets.innerText) * parseInt(NBaskets.innerText)) +
-                (parseFloat(PSocks.innerText) * parseInt(NSocks.innerText)) +
-                (parseFloat(PBag.innerText) * parseInt(NBag.innerText));
-    document.querySelector('.total').innerText = total;
-}
-
-
-
-// console.log(totalPrice())
