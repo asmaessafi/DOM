@@ -1,8 +1,8 @@
 let ProductList= document.getElementById('list-products');
 let product =[
-    {noun:"Baskets",img:"/assets/baskets.png",p:'This is a basket',price:'100 '},
-    {noun:"Socks",img:"/assets/socks.png",p:'This is a socks',price:'20 '},
-    {noun:"Bag",img:"/assets/bag.png",p:'This is a bag',price:'50 '},
+    {noun:"Baskets",img:"./assets/baskets.png",p:'This is a basket',price:'100 '},
+    {noun:"Socks",img:"./assets/socks.png",p:'This is a socks',price:'20 '},
+    {noun:"Bag",img:"./assets/bag.png",p:'This is a bag',price:'50 '},
 ]
 
 function initializeProducts(){
